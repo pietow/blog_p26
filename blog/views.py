@@ -1,8 +1,9 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .forms import ContactForm, PostForm
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
+from django.urls import reverse, reverse_lazy
 
 def create_post_view(request):
     if request.method == 'POST':
@@ -40,3 +41,19 @@ class BlogListView(ListView):
 class BlogDetailView(DetailView):
     model= Post
     template_name = "post_detail.html"
+
+class BlogCreateView(CreateView):
+    model= Post
+    template_name = "post_new.html"
+    fields = ['title', 'author', 'body']
+    # fields = '__all__'
+
+class BlogUpdateView(UpdateView):
+    model = Post
+    template_name = "post_edit.html"
+    fields = ["title", "body"]
+
+class BlogDeleteView(DeleteView):
+    model = Post
+    template_name = "post_delete.html"
+    success_url = reverse_lazy('home')
